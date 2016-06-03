@@ -6,15 +6,17 @@ import (
 )
 
 type ConfigStructure struct {
-	ServerPort  int
-	ApiEndpoint string
-    DatabaseAddress string
+	ServerHostname  string
+	ServerPort      int
+	ApiEndpoint     string
+	DatabaseAddress string
+	DatabaseName    string
 }
 
 var Config ConfigStructure
 
 func ReadConfig(filePath string) {
-    Logger.Printf("Reading config from %s", filePath)
+	Logger.Printf("Reading config from %s", filePath)
 	rawData, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		Logger.Fatalf("Error while reading config file: %s", err)

@@ -2,10 +2,10 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/gorilla/handlers"
 
@@ -27,6 +27,7 @@ func main() {
 
 	controllers.AlbumRegisterController()
 
-	util.Logger.Printf("Listening on port %d", util.Config.ServerPort)
-	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(util.Config.ServerPort), handlers.LoggingHandler(os.Stdout, util.Router)))
+	address := fmt.Sprintf("%s:%d", util.Config.ServerHostname, util.Config.ServerPort)
+	util.Logger.Printf("Listening on %s", address)
+	log.Fatal(http.ListenAndServe(address, handlers.LoggingHandler(os.Stdout, util.Router)))
 }

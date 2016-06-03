@@ -16,5 +16,6 @@ func GetDBSession() {
 }
 
 func GetDB() *mgo.Database {
-	return DBSession.DB("albumify")
+	Logger.Printf("Got database %s", Config.DatabaseName)
+	return DBSession.DB(Config.DatabaseName)
 }

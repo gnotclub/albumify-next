@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -14,12 +15,15 @@ import (
 
 const prefix string = "/albums"
 
+var subrouter *mux.Router
 var collection *mgo.Collection
 
 func AlbumRegisterController() {
+	subrouter = util.Router.PathPrefix(prefix).Subrouter()
 	collection = util.GetDB().C("albums")
 
-	util.Router.HandleFunc(prefix+"/{albumId}", AlbumShow)
+	subrouter.HandleFunc("/{albumId}", AlbumShow).Methods("GET")
+	subrouter.HandleFunc("/", AlbumSubmit).Methods("GET", "POST")
 }
 
 func AlbumShow(w http.ResponseWriter, r *http.Request) {
@@ -33,4 +37,27 @@ func AlbumShow(w http.ResponseWriter, r *http.Request) {
 	} else {
 		json.NewEncoder(w).Encode(result)
 	}
+}
+
+func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
+	var album, prevAlbum models.Album
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&album)
+	// TODO: validation
+	if err != nil {
+		http.Error(w, "bad request", http.StatusBadRequest)
+		util.Logger.Printf("Bad Request in album submission: %s", err)
+	}
+	err = collection.Find(bson.M{}).Sort("-_id").One(&prevAlbum)
+	if err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		util.Logger.Printf("Couldn't get last album in collection: %s", err)
+	}
+	album.Id = prevAlbum.Id + 1
+	err = collection.Insert(album)
+	if err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		util.Logger.Printf("Couldn't insert album in collection: %s", err)
+	}
+	fmt.Fprintf(w, "{\"code\": \"%s\"}", util.UrlEncode(album.Id))
 }

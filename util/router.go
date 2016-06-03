@@ -1,8 +1,6 @@
 package util
 
-import (
-	"github.com/gorilla/mux"
-)
+import "github.com/gorilla/mux"
 
 var MainRouter *mux.Router
 var Router *mux.Router
