@@ -32,5 +32,6 @@ func main() {
 	// Listen
 	address := fmt.Sprintf("%s:%d", util.Config.ServerHostname, util.Config.ServerPort)
 	util.Logger.Printf("Listening on %s", address)
-	log.Fatal(http.ListenAndServe(address, handlers.LoggingHandler(os.Stdout, util.Router)))
+	http.Handle("/", &util.MyServer{util.MainRouter})
+	log.Fatal(http.ListenAndServe(address, handlers.LoggingHandler(os.Stdout, &util.MyServer{util.MainRouter})))
 }

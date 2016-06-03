@@ -52,9 +52,7 @@ func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
 	// TODO: validation
 	if err != nil {
 		http.Error(w, "400 bad request", http.StatusBadRequest)
-		var s []byte
-		r.Body.Read(s)
-		util.Logger.Printf("%s Bad Request in album submission: %s", err)
+		util.Logger.Printf("Bad Request in album submission: %s", err)
 		return
 	}
 	err = models.PutAlbum(&album)
