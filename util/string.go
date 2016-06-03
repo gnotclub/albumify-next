@@ -1,5 +1,6 @@
 package util
 
+// Returns the reversed form of str. UTF-8 aware
 func ReverseString(str string) string {
 	// Store runes
 	n := 0

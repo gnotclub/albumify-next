@@ -18,6 +18,7 @@ const prefix string = "/albums"
 var subrouter *mux.Router
 var collection *mgo.Collection
 
+// Registers the routes for this controller
 func AlbumRegisterController() {
 	subrouter = util.Router.PathPrefix(prefix).Subrouter()
 	collection = util.GetDB().C("albums")
@@ -26,6 +27,7 @@ func AlbumRegisterController() {
 	subrouter.HandleFunc("/", AlbumSubmit).Methods("GET", "POST")
 }
 
+// Display an Album in JSON form
 func AlbumShow(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	albumId := vars["albumId"]
@@ -39,6 +41,7 @@ func AlbumShow(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Register a new album based on the JSON passed in the request
 func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
 	var album, prevAlbum models.Album
 	decoder := json.NewDecoder(r.Body)
@@ -48,11 +51,13 @@ func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "bad request", http.StatusBadRequest)
 		util.Logger.Printf("Bad Request in album submission: %s", err)
 	}
+	// Get the last album registered
 	err = collection.Find(bson.M{}).Sort("-_id").One(&prevAlbum)
 	if err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		util.Logger.Printf("Couldn't get last album in collection: %s", err)
 	}
+	// Increment new album's id
 	album.Id = prevAlbum.Id + 1
 	err = collection.Insert(album)
 	if err != nil {

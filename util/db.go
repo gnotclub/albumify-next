@@ -6,6 +6,7 @@ import (
 
 var DBSession *mgo.Session
 
+// Try to connect to the database
 func GetDBSession() {
 	session, err := mgo.Dial(Config.DatabaseAddress)
 	if err != nil {
@@ -15,6 +16,7 @@ func GetDBSession() {
 	DBSession = session
 }
 
+// Returns the database we're operating on
 func GetDB() *mgo.Database {
 	Logger.Printf("Got database %s", Config.DatabaseName)
 	return DBSession.DB(Config.DatabaseName)

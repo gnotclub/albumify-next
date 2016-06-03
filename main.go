@@ -16,6 +16,7 @@ import (
 func main() {
 	util.GetLogger()
 
+	// Get config file path from command line args
 	var configFile = flag.String("config", "config.json", "path of the config file")
 	flag.Parse()
 	util.ReadConfig(*configFile)
@@ -25,8 +26,10 @@ func main() {
 
 	util.GetRouter()
 
+	// Register routes for all of Album's controllers
 	controllers.AlbumRegisterController()
 
+	// Listen
 	address := fmt.Sprintf("%s:%d", util.Config.ServerHostname, util.Config.ServerPort)
 	util.Logger.Printf("Listening on %s", address)
 	log.Fatal(http.ListenAndServe(address, handlers.LoggingHandler(os.Stdout, util.Router)))
