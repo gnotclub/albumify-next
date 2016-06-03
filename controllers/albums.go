@@ -21,7 +21,7 @@ var collection *mgo.Collection
 // Registers the routes for this controller
 func AlbumRegisterController() {
 	subrouter = util.Router.PathPrefix(prefix).Subrouter()
-	collection = util.GetDB().C("albums")
+	collection = util.GetDB().C(models.AlbumCollection)
 
 	subrouter.HandleFunc("/{albumId}", AlbumShow).Methods("GET")
 	subrouter.HandleFunc("/", AlbumSubmit).Methods("GET", "POST")
@@ -29,13 +29,14 @@ func AlbumRegisterController() {
 
 // Display an Album in JSON form
 func AlbumShow(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	vars := mux.Vars(r)
 	albumId := vars["albumId"]
 	documentId := util.UrlDecode(albumId)
-	result := models.Album{}
-	err := collection.Find(bson.M{"_id": documentId}).One(&result)
+	err, result := models.GetAlbum(bson.M{"_id": documentId})
 	if err != nil {
-		http.Error(w, "not found", http.StatusNotFound)
+		http.Error(w, "404 page not found", http.StatusNotFound)
 	} else {
 		json.NewEncoder(w).Encode(result)
 	}
@@ -43,26 +44,26 @@ func AlbumShow(w http.ResponseWriter, r *http.Request) {
 
 // Register a new album based on the JSON passed in the request
 func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
-	var album, prevAlbum models.Album
+	w.Header().Set("Content-Type", "application/json")
+
+	var album models.Album
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&album)
 	// TODO: validation
 	if err != nil {
-		http.Error(w, "bad request", http.StatusBadRequest)
-		util.Logger.Printf("Bad Request in album submission: %s", err)
+		http.Error(w, "400 bad request", http.StatusBadRequest)
+		var s []byte
+		r.Body.Read(s)
+		util.Logger.Printf("%s Bad Request in album submission: %s", err)
+		return
 	}
-	// Get the last album registered
-	err = collection.Find(bson.M{}).Sort("-_id").One(&prevAlbum)
+	err = models.PutAlbum(&album)
 	if err != nil {
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-		util.Logger.Printf("Couldn't get last album in collection: %s", err)
+		http.Error(w, "500 internal server error", http.StatusInternalServerError)
+		util.Logger.Printf("Error while trying to insert album into collection: %s", err)
 	}
-	// Increment new album's id
-	album.Id = prevAlbum.Id + 1
-	err = collection.Insert(album)
-	if err != nil {
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-		util.Logger.Printf("Couldn't insert album in collection: %s", err)
-	}
-	fmt.Fprintf(w, "{\"code\": \"%s\"}", util.UrlEncode(album.Id))
+	outData, _ := json.Marshal(
+		map[string]interface{}{"code": util.UrlEncode(album.Id)},
+	)
+	fmt.Fprintf(w, "%s", outData)
 }
