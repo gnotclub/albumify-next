@@ -4,8 +4,10 @@ import (
     "github.com/gorilla/mux"
 )
 
+var MainRouter *mux.Router
 var Router *mux.Router
 func GetRouter() {
-    Router = mux.NewRouter()
-    Router.StrictSlash(true)
+    MainRouter = mux.NewRouter()
+    MainRouter.StrictSlash(true)
+    Router = MainRouter.PathPrefix("/api").Subrouter()
 }
