@@ -15,7 +15,7 @@ image host to use. You can also use different hosts for different images.
     go get github.com/gnotclub/albumify-next
     ```
 
-* Copy `config.json` somewhere
+* Copy `config.json` somewhere and edit it with the right data
 
 * Run the program as
 
