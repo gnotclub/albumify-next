@@ -1,3 +1,5 @@
+# This software is a Work In Progress
+
 # albumify-next
 
 ## Imgur-like album creator
