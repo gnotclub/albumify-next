@@ -1,11 +1,12 @@
 package util
 
 import (
-    "log"
-    "os"
+	"log"
+	"os"
 )
 
 var Logger *log.Logger
+
 func GetLogger() {
-    Logger = log.New(os.Stdout, "logger: ", log.Lshortfile)
+	Logger = log.New(os.Stdout, "logger: ", log.Lshortfile)
 }

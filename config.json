@@ -1,0 +1,5 @@
+{
+    "ServerPort": 8080,
+    "ApiEndpoint": "/api",
+    "DatabaseAddress": "localhost"
+}

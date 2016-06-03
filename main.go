@@ -1,32 +1,32 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "os"
-    "net/http"
+	"flag"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
 
-    "github.com/gorilla/handlers"
+	"github.com/gorilla/handlers"
 
-    "github.com/gnotclub/albumify-next/util"
-    "github.com/gnotclub/albumify-next/controllers"
+	"github.com/gnotclub/albumify-next/controllers"
+	"github.com/gnotclub/albumify-next/util"
 )
 
 func main() {
-    util.GetLogger()
+	util.GetLogger()
 
-    util.GetDBSession()
-    defer util.DBSession.Close()
+	var configFile = flag.String("config", "config.json", "path of the config file")
+	flag.Parse()
+	util.ReadConfig(*configFile)
 
-    util.GetRouter()
-    util.Router.HandleFunc("/", EmptyHandler)
+	util.GetDBSession()
+	defer util.DBSession.Close()
 
-    controllers.AlbumRegisterController()
+	util.GetRouter()
 
-    util.Logger.Println("Server ready.")
-    log.Fatal(http.ListenAndServe(":8080", handlers.LoggingHandler(os.Stdout, util.Router)))
-}
+	controllers.AlbumRegisterController()
 
-func EmptyHandler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "")
+	util.Logger.Printf("Listening on port %d", util.Config.ServerPort)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(util.Config.ServerPort), handlers.LoggingHandler(os.Stdout, util.Router)))
 }
