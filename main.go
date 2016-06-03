@@ -8,8 +8,8 @@ import (
 
     "github.com/gorilla/handlers"
 
-    "github.com/tudurom/albumify-next/util"
-    "github.com/tudurom/albumify-next/controllers"
+    "github.com/gnotclub/albumify-next/util"
+    "github.com/gnotclub/albumify-next/controllers"
 )
 
 func main() {

@@ -8,8 +8,8 @@ import (
     "gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
 
-    "github.com/tudurom/albumify-next/util"
-    "github.com/tudurom/albumify-next/models"
+    "github.com/gnotclub/albumify-next/util"
+    "github.com/gnotclub/albumify-next/models"
 )
 
 const prefix string = "/albums"
