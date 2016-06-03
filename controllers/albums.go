@@ -63,7 +63,11 @@ func AlbumSubmit(w http.ResponseWriter, r *http.Request) {
 		util.Logger.Printf("Error while trying to insert album into collection: %s", err)
 	}
 	outData, _ := json.Marshal(
-		map[string]interface{}{"code": util.UrlEncode(album.Id)},
+		map[string]interface{}{
+			"code": util.UrlEncode(album.Id),
+			"url": fmt.Sprintf("%s:%d%s%s/%s", util.Config.ServerHostname, util.Config.ServerPort,
+				util.Config.ApiEndpoint, prefix, util.UrlEncode(album.Id)),
+		},
 	)
 	fmt.Fprintf(w, "%s", outData)
 }
