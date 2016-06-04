@@ -20,5 +20,6 @@ image host to use. You can also use different hosts for different images.
 * Run the program as
 
     ```bash
+    cd $GOPATH/src/github.com/gnotclub/albumify-next
     albumify-next -config <path to config file>
     ```
