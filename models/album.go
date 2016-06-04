@@ -36,7 +36,11 @@ func PutAlbum(album *Album) error {
 
 	err := c.Find(bson.M{}).Sort("-_id").One(&prevAlbum)
 	if err != nil {
-		return err
+		if err.Error() == "not found" {
+			prevAlbum.Id = 0
+		} else {
+			return err
+		}
 	}
 
 	(*album).Id = prevAlbum.Id + 1

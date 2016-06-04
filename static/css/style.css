@@ -1,0 +1,8 @@
+form div {
+    display: block;
+}
+
+form input[type="submit"] {
+    border: none;
+    display: inline-block;
+}

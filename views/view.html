@@ -1,0 +1,31 @@
+{{define "view"}}
+<!DOCTYPE html>
+<html>
+    {{template "header"}}
+
+    <body>
+        <main>
+            <a href="/" id="home">Albumify</a>
+
+            <div class="metadata">
+                <h1>{{.Title}}</h1>
+                <hr />
+                <div class="description"><p>{{.Description}}</p></div>
+            </div>
+
+
+            <div class="container">
+                {{range .Images}}
+                <div class="pic">
+                    <h3>{{.Title}}</h3>
+                    <span class="description"><p>{{.Description}}</p></span>
+                    <a href="{{.Link}}"><img src="{{.Link}}"></a>
+                </div>
+                {{end}}
+            </div>
+        </main>
+
+        {{template "footer"}}
+    </body>
+</html>
+{{end}}

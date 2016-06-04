@@ -28,6 +28,9 @@ func main() {
 
 	// Register routes for all of Album's controllers
 	controllers.AlbumRegisterController()
+	// Register main client's controllers
+	controllers.CompileClientTemplates()
+	controllers.ClientRegisterController()
 
 	// Listen
 	address := fmt.Sprintf("%s:%d", util.Config.ServerHostname, util.Config.ServerPort)

@@ -3,5 +3,6 @@
     "ServerPort": 8080,
     "ApiEndpoint": "/api",
     "DatabaseAddress": "localhost",
-    "DatabaseName": "albumify"
+    "DatabaseName": "albumify",
+    "AssetsFolder": "/static"
 }

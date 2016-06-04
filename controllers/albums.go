@@ -37,9 +37,9 @@ func AlbumShow(w http.ResponseWriter, r *http.Request) {
 	err, result := models.GetAlbum(bson.M{"_id": documentId})
 	if err != nil {
 		http.Error(w, "404 page not found", http.StatusNotFound)
-	} else {
-		json.NewEncoder(w).Encode(result)
 	}
+
+	json.NewEncoder(w).Encode(result)
 }
 
 // Register a new album based on the JSON passed in the request

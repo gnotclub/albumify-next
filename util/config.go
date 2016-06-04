@@ -11,6 +11,7 @@ type ConfigStructure struct {
 	ApiEndpoint     string
 	DatabaseAddress string
 	DatabaseName    string
+	AssetsFolder    string
 }
 
 var Config ConfigStructure
