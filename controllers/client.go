@@ -10,7 +10,20 @@ import (
 	"github.com/gnotclub/albumify-next/models"
 	"github.com/gnotclub/albumify-next/util"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 )
+
+type AlbumFrameSchema struct {
+	Title       string `schema:"title"`
+	Description string `schema:"description"`
+	Link        string `schema:"link"`
+}
+
+type AlbumCreatorSchema struct {
+	Title       string             `schema:"album_title_input"`
+	Description string             `schema:"album_desc_input"`
+	Frames      []AlbumFrameSchema `schema:"frame"`
+}
 
 var IndexTemplate, ViewTemplate *template.Template
 
@@ -33,8 +46,16 @@ func CreateAlbum(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		IndexTemplate.ExecuteTemplate(w, "index", nil)
 	} else {
-		r.ParseForm()
-		fmt.Fprintln(w, r.Form["image[0][title]"])
+		err := r.ParseForm()
+
+		if err != nil {
+			util.Logger.Fatal("Error while parsing form: " + err.Error())
+		}
+
+		album := new(AlbumCreatorSchema)
+		decoder := schema.NewDecoder()
+		err = decoder.Decode(album, r.PostForm)
+		fmt.Println(album.Title)
 	}
 }
 

@@ -24,27 +24,12 @@
                         <textarea id="album_desc_input" rows="5" cols="25" name="album_desc_input" placeholder="It was fun"></textarea>
                     </div>
 
-                    <div class="frames">
-                        <div id="frame1" class="frame">
-                            <h3>Image 1</h3>
-
-                            <div>
-                                <p>Image Title</p>
-                                <input id="image_title" name="image[0][title]" type="text">
-                            </div>
-
-                            <div>
-                                <p for="image_description">Image Description</p>
-                                <textarea id="image_description" rows="3" cols="25" name="image[0][title]"></textarea>
-                            </div>
-
-                            <div>
-                                <p for="image_link">Image link</p>
-                                <input id="image_link" name="image[0][link]" type="text">
-                            </div>
-                        </div>
+                    <div id="frames">
                     </div>
                     <br />
+                    <div>
+                        <input type="button" id="addFrame" value="Add frame">
+                    </div>
                     <div>
                         <input type="submit" value="Submit!">
                     </div>
@@ -53,6 +38,8 @@
         </main>
 
         {{template "footer"}}
+
+        <script src="/static/js/make.js"></script>
     </body>
 </html>
 {{end}}
