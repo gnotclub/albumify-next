@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -12,18 +11,6 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 )
-
-type AlbumFrameSchema struct {
-	Title       string `schema:"title"`
-	Description string `schema:"description"`
-	Link        string `schema:"link"`
-}
-
-type AlbumCreatorSchema struct {
-	Title       string             `schema:"album_title_input"`
-	Description string             `schema:"album_desc_input"`
-	Frames      []AlbumFrameSchema `schema:"frame"`
-}
 
 var IndexTemplate, ViewTemplate *template.Template
 
@@ -50,12 +37,25 @@ func CreateAlbum(w http.ResponseWriter, r *http.Request) {
 
 		if err != nil {
 			util.Logger.Fatal("Error while parsing form: " + err.Error())
+			http.Error(w, "500 internal server error", http.StatusInternalServerError)
+			return
 		}
 
-		album := new(AlbumCreatorSchema)
+		var album models.Album
 		decoder := schema.NewDecoder()
-		err = decoder.Decode(album, r.PostForm)
-		fmt.Println(album.Title)
+		err = decoder.Decode(&album, r.PostForm)
+		if err != nil {
+			util.Logger.Fatal("Error while parsing form: " + err.Error())
+			http.Error(w, "500 internal server error", http.StatusInternalServerError)
+			return
+		}
+		err = models.PutAlbum(&album)
+		if err != nil {
+			http.Error(w, "500 internal server error", http.StatusInternalServerError)
+			util.Logger.Printf("Error while trying to insert album into collection: %s", err)
+		}
+		id := util.UrlEncode(album.Id)
+		http.Redirect(w, r, "/"+id, 301)
 	}
 }
 

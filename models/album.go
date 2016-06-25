@@ -9,17 +9,17 @@ import (
 var AlbumCollection string = "albums"
 
 type Image struct {
-	Title       string `bson:"title" json:"title"`
-	Description string `bson:"description" json:"description"`
-	Link        string `bson:"link" json:"link"`
+	Title       string `bson:"title" json:"title" schema:"title"`
+	Description string `bson:"description" json:"description" schema:"description"`
+	Link        string `bson:"link" json:"link" schema:"link"`
 }
 
 // An album contains images and metadata
 type Album struct {
-	Id          int64    `bson:"_id" json:"_id"`
-	Title       string   `bson:"title" json:"title"`
-	Description string   `bson:"description" json:"description"`
-	Images      []*Image `bson:"images" json:"images"`
+	Id          int64   `bson:"_id" json:"_id" schema:"-"`
+	Title       string  `bson:"title" json:"title" schema:"album_title_input"`
+	Description string  `bson:"description" json:"description" schema:"album_desc_input"`
+	Images      []Image `bson:"images" json:"images" schema:"frame"`
 }
 
 func GetAlbum(query bson.M) (error, Album) {
