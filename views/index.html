@@ -7,7 +7,6 @@
         <main>
             <div class="title">
                 <h1>Albumify</h1>
-                <hr />
             </div>
 
             <div class="container">
@@ -15,23 +14,20 @@
                     <h3>Album</h3>
 
                     <div>
-                        <p for="album_title_input">Album title</p>
+                        <p class="label" for="album_title_input">Album title</p>
                         <input id="album_title_input" type="text" name="album_title_input" placeholder="A day at the beach">
                     </div>
 
                     <div>
-                        <p for="album_desc_input">Album Description</p>
+                        <p class="label" for="album_desc_input">Album Description</p>
                         <textarea id="album_desc_input" rows="5" cols="25" name="album_desc_input" placeholder="It was fun"></textarea>
                     </div>
 
                     <div id="frames">
                     </div>
-                    <br />
                     <div>
-                        <input type="button" id="addFrame" value="Add frame">
-                    </div>
-                    <div>
-                        <input type="submit" value="Submit!">
+                        <button type="button" id="addFrame">Add frame</button>
+                        <button type="submit">Submit!</button>
                     </div>
                 </form>
             </div>

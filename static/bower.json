@@ -1,0 +1,21 @@
+{
+  "name": "static",
+  "homepage": "https://github.com/gnotclub/albumify-next",
+  "authors": [
+    ""
+  ],
+  "description": "",
+  "main": "",
+  "license": "ISC",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
+}

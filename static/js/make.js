@@ -13,22 +13,22 @@ function addFrame(n) {
     r  = '<div id="frame' + n + '" class="frame">';
     r += '    <h3 class="number">Image ' + (n + 1) + '</h1>';
     r += '    <div>';
-    r += '        <p>Image Title</p>';
+    r += '        <p class="label" for="image_title">Image Title</p>';
     r += '        <input id="image_title" placeholder="A day at the beach" name="frame.' + n + '.title" value="" type="text">';
     r += '    </div>';
 
     r += '    <div>';
-    r += '        <p for="image_description">Image Description</p>';
-    r += '        <input id="image_description" rows="3" cols="25" name="frame.' + n + '.description">';
+    r += '        <p class="label" for="image_description">Image Description</p>';
+    r += '        <textarea id="image_description" rows="2" cols="25" name="frame.' + n + '.description" placeholder="37 degrees outside"></textarea>';
     r += '    </div>';
 
     r += '    <div>';
-    r += '        <p for="image_link">Image Link</p>';
-    r += '        <input id="image_link" name="frame.' + n + '.link" type="text">';
+    r += '        <p class="label" for="image_link">Image Link</p>';
+    r += '        <input id="image_link" name="frame.' + n + '.link" type="text" placeholder="http://i.imgur.com/turtles.png">';
     r += '    </div>';
 
     r += '    <div>';
-    r += '        <input type="button" id="delete_frame" value="Delete Frame">';
+    r += '        <button id="delete_frame">Delete Frame</button>';
     r += '    </div>';
     r += '</div>';
 
